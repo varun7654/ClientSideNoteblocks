@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.dacubeking.clientsidenoteblocks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ClientPlayerInteractionManagerMixin",
+    "ClientWorldMixin",
+    "SoundHandlerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
