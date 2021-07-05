@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "clientsidenoteblocks",
+  "version": "${version}",
+  "name": "Clientsidenoteblocks",
+  "description": "",
+  "authors": [
+    "DaCubeKing"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/clientsidenoteblocks/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient"
+    ],
+    "main": [
+      "me.dacubeking.clientsidenoteblocks.ClientSideNoteblocks"
+    ]
+  },
+  "mixins": [
+    "clientsidenoteblocks.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "~1.16.2"
+  }
+}
