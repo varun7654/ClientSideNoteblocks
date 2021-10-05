@@ -13,7 +13,7 @@ https://youtu.be/5kv47QA2lTo
 To use this mod simply add the mods to your mods folder. You will also need to install the fabric API.
 The mod will automatically prevent unwanted sounds -- duplicate sounds from the server and block break sounds on noteblocks from playing. Once you install the mod it will immediately work and nothing needs to be configured!
 
-If you want to support me you can subscribe to my youtube channel: youtube.com/DaCubeKing
+If you want to support me you can subscribe to my youtube channel: https://www.youtube.com/DaCubeKing
 If you use this mod while making a video it would be greatly appreciated if you link to this mod and/or my youtube channel in the description. :)
 
 # FAQ
