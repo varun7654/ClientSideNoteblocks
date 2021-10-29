@@ -2,13 +2,16 @@
   "schemaVersion": 1,
   "id": "clientsidenoteblocks",
   "version": "${version}",
-  "name": "Clientsidenoteblocks",
-  "description": "",
+  "name": "ClientSideNoteblocks",
+  "description": "Remove noteblock lag",
   "authors": [
     "DaCubeKing"
   ],
-  "contact": {},
-  "license": "MIT",
+  "contact": {
+    "website": "https://www.youtube.com/DaCubeKing",
+    "repo": "https://github.com/DaCubeKing/ClientSideNoteblocks"
+  },
+  "license": "LGPL-3.0",
   "icon": "assets/clientsidenoteblocks/icon.png",
   "environment": "client",
   "entrypoints": {
@@ -23,8 +26,8 @@
     "clientsidenoteblocks.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "~1.16.2"
+    "minecraft": "~1.17"
   }
 }
