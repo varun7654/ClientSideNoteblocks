@@ -8,8 +8,9 @@
     "DaCubeKing"
   ],
   "contact": {
-    "website": "https://www.youtube.com/DaCubeKing",
-    "repo": "https://github.com/DaCubeKing/ClientSideNoteblocks"
+    "homepage": "https://www.youtube.com/DaCubeKing/",
+    "sources": "https://github.com/DaCubeKing/ClientSideNoteblocks/",
+    "issues": "https://github.com/DaCubeKing/ClientSideNoteblocks/issues"
   },
   "license": "LGPL-3.0",
   "icon": "assets/clientsidenoteblocks/icon.png",
@@ -26,8 +27,8 @@
     "clientsidenoteblocks.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.6",
+    "fabricloader": ">=0.12.5",
     "fabric": "*",
-    "minecraft": "~1.17"
+    "minecraft": "~1.18-beta.5"
   }
 }
