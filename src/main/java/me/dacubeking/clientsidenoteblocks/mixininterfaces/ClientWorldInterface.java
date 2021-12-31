@@ -1,6 +1,5 @@
 package me.dacubeking.clientsidenoteblocks.mixininterfaces;
 
-import me.dacubeking.clientsidenoteblocks.expiringmap.SelfExpiringHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;

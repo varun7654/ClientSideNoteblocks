@@ -1,7 +1,5 @@
 package me.dacubeking.clientsidenoteblocks.mixin;
 
-import me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData;
-import me.dacubeking.clientsidenoteblocks.expiringmap.SelfExpiringHashMap;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.ClientWorldInterface;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.SoundHandlerInterface;
 import net.minecraft.client.MinecraftClient;
@@ -15,9 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
@@ -28,9 +23,10 @@ public class ClientWorldMixin implements ClientWorldInterface {
     @Shadow
     private MinecraftClient client;
 
+    @Override
     public void bypassedPlaySound(@Nullable PlayerEntity player, BlockPos pos, SoundEvent sound, SoundCategory category, float volume, float pitch) {
         if (Objects.equals(player, this.client.player)) {
-            PositionedSoundInstance positionedSoundInstance = new PositionedSoundInstance(sound, category, volume, pitch, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
+            PositionedSoundInstance positionedSoundInstance = new PositionedSoundInstance(sound, category, volume, pitch, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
             SoundHandlerInterface soundManager = (SoundHandlerInterface) this.client.getSoundManager();
             soundManager.bypassedPlay(positionedSoundInstance);
         }

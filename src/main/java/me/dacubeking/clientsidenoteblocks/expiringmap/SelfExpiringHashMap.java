@@ -21,23 +21,22 @@ package me.dacubeking.clientsidenoteblocks.expiringmap;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A HashMap which entries expires after the specified life time.
- * The life-time can be defined on a per-key basis, or using a default one, that is passed to the 
- * constructor.
+ * A HashMap which entries expires after the specified life time. The life-time can be defined on a per-key basis, or using a
+ * default one, that is passed to the constructor.
  *
- * @author Pierantonio Cangianiello
  * @param <K> the Key type
  * @param <V> the Value type
+ * @author Pierantonio Cangianiello
  */
 public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
 
@@ -103,7 +102,7 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     @Override
     public boolean containsKey(Object key) {
         cleanup();
-        return internalMap.containsKey((K) key);
+        return internalMap.containsKey(key);
     }
 
     /**
@@ -112,14 +111,14 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     @Override
     public boolean containsValue(Object value) {
         cleanup();
-        return internalMap.containsValue((V) value);
+        return internalMap.containsValue(value);
     }
 
     @Override
     public V get(Object key) {
         cleanup();
         renewKey((K) key);
-        return internalMap.get((K) key);
+        return internalMap.get(key);
     }
 
     /**
@@ -137,10 +136,10 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     public V put(K key, V value, long lifeTimeMillis) {
         cleanup();
         ExpiringKey delayedKey = new ExpiringKey(key, lifeTimeMillis);
-        ExpiringKey oldKey = expiringKeys.put((K) key, delayedKey);
-        if(oldKey != null) {
+        ExpiringKey oldKey = expiringKeys.put(key, delayedKey);
+        if (oldKey != null) {
             expireKey(oldKey);
-            expiringKeys.put((K) key, delayedKey);
+            expiringKeys.put(key, delayedKey);
         }
         delayQueue.offer(delayedKey);
         return internalMap.put(key, value);
@@ -151,8 +150,8 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
      */
     @Override
     public V remove(Object key) {
-        V removedValue = internalMap.remove((K) key);
-        expireKey(expiringKeys.remove((K) key));
+        V removedValue = internalMap.remove(key);
+        expireKey(expiringKeys.remove(key));
         return removedValue;
     }
 
@@ -169,7 +168,7 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
      */
     @Override
     public boolean renewKey(K key) {
-        ExpiringKey<K> delayedKey = expiringKeys.get((K) key);
+        ExpiringKey<K> delayedKey = expiringKeys.get(key);
         if (delayedKey != null) {
             delayedKey.renew();
             return true;
@@ -255,10 +254,7 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
                 return false;
             }
             final ExpiringKey<K> other = (ExpiringKey<K>) obj;
-            if (!Objects.equals(this.key, other.key)) {
-                return false;
-            }
-            return true;
+            return Objects.equals(this.key, other.key);
         }
 
         /**

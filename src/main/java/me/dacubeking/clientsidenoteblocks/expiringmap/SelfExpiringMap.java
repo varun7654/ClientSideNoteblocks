@@ -25,10 +25,9 @@ package me.dacubeking.clientsidenoteblocks.expiringmap;/*
 import java.util.Map;
 
 /**
- *
- * @author Pierantonio Cangianiello
  * @param <K> the Key type
  * @param <V> the Value type
+ * @author Pierantonio Cangianiello
  */
 public interface SelfExpiringMap<K, V> extends Map<K, V> {
 
@@ -38,17 +37,16 @@ public interface SelfExpiringMap<K, V> extends Map<K, V> {
      * @param key
      * @return true if the key is found, false otherwise
      */
-    public boolean renewKey(K key);
+    boolean renewKey(K key);
 
     /**
-     * Associates the given key to the given value in this map, with the specified life
-     * times in milliseconds.
+     * Associates the given key to the given value in this map, with the specified life times in milliseconds.
      *
      * @param key
      * @param value
      * @param lifeTimeMillis
      * @return a previously associated object for the given key (if exists).
      */
-    public V put(K key, V value, long lifeTimeMillis);
+    V put(K key, V value, long lifeTimeMillis);
 
 }

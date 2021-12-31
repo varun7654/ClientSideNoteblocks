@@ -18,9 +18,6 @@
   "entrypoints": {
     "client": [
       "me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient"
-    ],
-    "main": [
-      "me.dacubeking.clientsidenoteblocks.ClientSideNoteblocks"
     ]
   },
   "mixins": [

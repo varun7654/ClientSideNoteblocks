@@ -23,14 +23,14 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
     @Shadow @Final private ClientPlayNetworkHandler networkHandler;
 
-    @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE" , target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
-    public void cancelBlockBreakSound(SoundManager soundManager, SoundInstance sound, BlockPos pos, Direction direction){
-        if(this.client.world == null){
+    @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
+    public void cancelBlockBreakSound(SoundManager soundManager, SoundInstance sound, BlockPos pos, Direction direction) {
+        if (this.client.world == null) {
             soundManager.play(sound);
             return;
         }
 
-        if(!(this.client.world.getBlockState(pos).getBlock() == Blocks.NOTE_BLOCK)){
+        if (!(this.client.world.getBlockState(pos).getBlock() == Blocks.NOTE_BLOCK)) {
             soundManager.play(sound);
             return;
         }
