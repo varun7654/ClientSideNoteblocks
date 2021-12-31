@@ -22,36 +22,30 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
-            if (world.isClient) {
-                if (world.getBlockState(pos).getBlock().getClass() == NoteBlock.class) {
-                    BlockState blockState = world.getBlockState(pos);
+            if (world.isClient && !player.isCreative() && !player.isSpectator()
+                    && world.getBlockState(pos).getBlock().getClass() == NoteBlock.class) {
+                BlockState blockState = world.getBlockState(pos);
 
-                    int i = blockState.get(NOTE);
-                    float f = (float) Math.pow(2.0D, (double) (i - 12) / 12.0D);
-                    if (world.getBlockState(pos.up()).isAir()) {
-                        if (MinecraftClient.getInstance().world != null) {
+                int i = blockState.get(NOTE);
+                float f = (float) Math.pow(2.0D, (double) (i - 12) / 12.0D);
+                if (world.getBlockState(pos.up()).isAir() && MinecraftClient.getInstance().world != null) {
+                    ClientWorldInterface clientWorldInterface = ((ClientWorldInterface) MinecraftClient.getInstance().world);
 
-                            ClientWorldInterface clientWorldInterface = ((ClientWorldInterface) MinecraftClient.getInstance().world);
+                    clientWorldInterface.bypassedPlaySound(player, pos, blockState.get(INSTRUMENT).getSound(),
+                            SoundCategory.RECORDS, 3.0F, f);
 
-                            clientWorldInterface.bypassedPlaySound(player, pos, blockState.get(INSTRUMENT).getSound(),
-                                    SoundCategory.RECORDS, 3.0F, f);
+                    SelfExpiringHashMap<BlockPos, Integer> cancelableNoteblockSounds = NoteblockData.cancelableNoteblockSounds;
 
-                            SelfExpiringHashMap<BlockPos, Integer> cancelableNoteblockSounds = NoteblockData.cancelableNoteblockSounds;
-
-                            if (cancelableNoteblockSounds.containsKey(pos)) {
-                                cancelableNoteblockSounds.put(pos, cancelableNoteblockSounds.get(pos) + 1);
-                            } else {
-                                cancelableNoteblockSounds.put(pos, 1);
-                            }
-                        }
-
+                    if (cancelableNoteblockSounds.containsKey(pos)) {
+                        cancelableNoteblockSounds.put(pos, cancelableNoteblockSounds.get(pos) + 1);
+                    } else {
+                        cancelableNoteblockSounds.put(pos, 1);
                     }
                 }
 
+
             }
-
             return ActionResult.PASS;
-
         });
     }
 }
