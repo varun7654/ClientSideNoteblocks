@@ -1,5 +1,6 @@
 package me.dacubeking.clientsidenoteblocks.mixin;
 
+import me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient;
 import me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.SoundHandlerInterface;
 import net.minecraft.client.sound.SoundInstance;
@@ -28,17 +29,23 @@ public class SoundHandlerMixin implements SoundHandlerInterface {
             } else {
                 NoteblockData.cancelableNoteblockSounds.put(pos, amount - 1);
             }
+            if (ClientSideNoteblocksClient.debug) {
+                System.out.println("Cancelled server note block sound");
+            }
             ci.cancel();
-
         }
     }
 
 
     @Final
-    @Shadow private SoundSystem soundSystem;
+    @Shadow
+    private SoundSystem soundSystem;
 
     @Override
     public void bypassedPlay(SoundInstance sound) {
         this.soundSystem.play(sound);
+        if (ClientSideNoteblocksClient.debug) {
+            System.out.println("Playing sound");
+        }
     }
 }

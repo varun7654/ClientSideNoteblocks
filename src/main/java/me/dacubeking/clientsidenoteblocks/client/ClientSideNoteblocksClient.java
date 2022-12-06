@@ -19,6 +19,9 @@ import static net.minecraft.block.NoteBlock.NOTE;
 
 @Environment(EnvType.CLIENT)
 public class ClientSideNoteblocksClient implements ClientModInitializer {
+
+    public static final boolean debug = false;
+
     @Override
     public void onInitializeClient() {
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
@@ -28,7 +31,8 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
 
                 int i = blockState.get(NOTE);
                 float f = (float) Math.pow(2.0D, (double) (i - 12) / 12.0D);
-                if (world.getBlockState(pos.up()).isAir() && MinecraftClient.getInstance().world != null) {
+                if (MinecraftClient.getInstance().world != null &&
+                        !blockState.get(INSTRUMENT).shouldRequireAirAbove() || world.getBlockState(pos.up()).isAir()) {
                     ClientWorldInterface clientWorldInterface = ((ClientWorldInterface) MinecraftClient.getInstance().world);
 
                     clientWorldInterface.bypassedPlaySound(player, pos, blockState.get(INSTRUMENT).getSound(),
