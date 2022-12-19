@@ -3,6 +3,7 @@ Remove lag caused by ping when playing the noteblocks in Minecraft.
 
 # Download
 Curseforge: https://www.curseforge.com/minecraft/mc-mods/client-side-noteblocks
+
 Modrinth: https://modrinth.com/mod/clientsidenoteblocks
 
 # About 
