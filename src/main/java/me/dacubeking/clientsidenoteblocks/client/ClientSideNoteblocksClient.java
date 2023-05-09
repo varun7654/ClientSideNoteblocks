@@ -22,7 +22,7 @@ import static net.minecraft.block.NoteBlock.NOTE;
 @Environment(EnvType.CLIENT)
 public class ClientSideNoteblocksClient implements ClientModInitializer {
 
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
     public static final Logger LOGGER = Logger.getLogger("ClientSideNoteblocks");
 
