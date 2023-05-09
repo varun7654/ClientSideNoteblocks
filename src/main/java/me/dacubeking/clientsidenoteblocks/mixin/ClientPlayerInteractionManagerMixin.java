@@ -36,11 +36,11 @@ public abstract class ClientPlayerInteractionManagerMixin {
         ClientPlayerEntity player = this.client.player;
         if (world == null || player == null
                 || player.isCreative() || player.isSpectator()
-                || !(world.getBlockState(pos).getBlock() == Blocks.NOTE_BLOCK)
+                || world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK
                 || !(world.getBlockState(pos).get(INSTRUMENT).shouldRequireAirAbove() && world.getBlockState(pos.up()).isAir())) {
             soundManager.play(sound);
         } else if (ClientSideNoteblocksClient.debug) {
-            System.out.println("Cancelled block break sound");
+            ClientSideNoteblocksClient.LOGGER.info("Cancelled block break sound");
         }
     }
 }

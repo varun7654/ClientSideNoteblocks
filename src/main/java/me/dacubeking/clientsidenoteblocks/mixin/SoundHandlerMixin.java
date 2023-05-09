@@ -20,7 +20,7 @@ public class SoundHandlerMixin implements SoundHandlerInterface {
 
     @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At("HEAD"), cancellable = true)
     public void onPlay(@NotNull SoundInstance sound, CallbackInfo ci) {
-        BlockPos pos = new BlockPos(sound.getX() - 0.5, sound.getY() - 0.5, sound.getZ() - 0.5);
+        BlockPos pos = new BlockPos((int) (sound.getX() - 0.5), (int) (sound.getY() - 0.5), (int) (sound.getZ() - 0.5));
 
         if (NoteblockData.cancelableNoteblockSounds.containsKey(pos)) {
             int amount = NoteblockData.cancelableNoteblockSounds.get(pos);
@@ -30,7 +30,7 @@ public class SoundHandlerMixin implements SoundHandlerInterface {
                 NoteblockData.cancelableNoteblockSounds.put(pos, amount - 1);
             }
             if (ClientSideNoteblocksClient.debug) {
-                System.out.println("Cancelled server note block sound");
+                ClientSideNoteblocksClient.LOGGER.info("Cancelled server note block sound");
             }
             ci.cancel();
         }
@@ -45,7 +45,7 @@ public class SoundHandlerMixin implements SoundHandlerInterface {
     public void bypassedPlay(SoundInstance sound) {
         this.soundSystem.play(sound);
         if (ClientSideNoteblocksClient.debug) {
-            System.out.println("Playing sound");
+            ClientSideNoteblocksClient.LOGGER.info("Playing sound");
         }
     }
 }
