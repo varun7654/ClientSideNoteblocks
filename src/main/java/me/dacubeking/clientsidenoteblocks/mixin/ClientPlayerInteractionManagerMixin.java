@@ -31,16 +31,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
     private ClientPlayNetworkHandler networkHandler;
 
     @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
-    public void cancelBlockBreakSound(SoundManager soundManager, SoundInstance sound, BlockPos pos, Direction direction) {
+    public void cancelBlockBreakSound(SoundManager instance, SoundInstance sound, BlockPos pos, Direction direction) {
         World world = this.client.world;
         ClientPlayerEntity player = this.client.player;
         if (world == null || player == null
                 || player.isCreative() || player.isSpectator()
                 || world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK
-                || !(world.getBlockState(pos).get(INSTRUMENT).shouldRequireAirAbove() && world.getBlockState(pos.up()).isAir())) {
-            soundManager.play(sound);
+                || (world.getBlockState(pos).get(INSTRUMENT).isNotBaseBlock() || !world.getBlockState(pos.up()).isAir())) {
+            this.client.getSoundManager().play(sound);
         } else if (ClientSideNoteblocksClient.debug) {
             ClientSideNoteblocksClient.LOGGER.info("Cancelled block break sound");
+
         }
     }
 }

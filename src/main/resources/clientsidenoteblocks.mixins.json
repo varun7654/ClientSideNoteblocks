@@ -6,7 +6,7 @@
   "mixins": [
     "ClientPlayerInteractionManagerMixin",
     "ClientWorldMixin",
-    "SoundHandlerMixin"
+    "NoteblockMixin"
   ],
   "client": [
   ],

@@ -4,10 +4,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public interface ClientWorldInterface {
 
 
-    void bypassedPlaySound(PlayerEntity player, BlockPos pos, RegistryEntry<SoundEvent> sound, SoundCategory voice, float v, float f);
+    void bypassedPlaySound(@Nullable PlayerEntity except, double x, double y, double z, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed);
 }
