@@ -8,7 +8,7 @@
     "DaCubeKing"
   ],
   "contact": {
-    "homepage": "https://www.youtube.com/DaCubeKing/",
+    "homepage": "https://dacubeking.com/",
     "sources": "https://github.com/DaCubeKing/ClientSideNoteblocks/",
     "issues": "https://github.com/DaCubeKing/ClientSideNoteblocks/issues"
   },
@@ -28,10 +28,10 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.21",
-    "minecraft": "~1.20-rc.1",
+    "minecraft": "~1.20",
     "java": ">=17"
   },
-  "softDepends": {
+  "suggests": {
     "modmenu": ">=4.1.0"
   },
   "accessWidener": "clientsidenoteblocks.accesswidener"
