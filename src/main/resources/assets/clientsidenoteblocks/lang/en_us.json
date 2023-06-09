@@ -1,0 +1,7 @@
+{
+  "text.autoconfig.clientsidenoteblocks.title": "Client Side Noteblocks Config",
+  "text.autoconfig.clientsidenoteblocks.option.debug": "Debug Mode",
+  "text.autoconfig.clientsidenoteblocks.option.debug.@Tooltip": "Enables debug mode. This will print out debug messages in the console.",
+  "text.autoconfig.clientsidenoteblocks.option.enabled": "Enabled",
+  "text.autoconfig.clientsidenoteblocks.option.enabled.@Tooltip": "Enables the Mod"
+}

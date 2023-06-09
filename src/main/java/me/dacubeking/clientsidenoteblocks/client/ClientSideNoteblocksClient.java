@@ -4,6 +4,8 @@ import me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData;
 import me.dacubeking.clientsidenoteblocks.expiringmap.SelfExpiringHashMap;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.ClientWorldInterface;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.NoteblockInterface;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -27,13 +29,25 @@ import static net.minecraft.block.NoteBlock.NOTE;
 @Environment(EnvType.CLIENT)
 public class ClientSideNoteblocksClient implements ClientModInitializer {
 
-    public static final boolean debug = false;
+    public static ModConfig config;
 
     public static final Logger LOGGER = Logger.getLogger("ClientSideNoteblocks");
 
+    public static boolean isDebug() {
+        return config.debug;
+    }
+
+    public static boolean isEnabled() {
+        return config.enabled;
+    }
+
     @Override
     public void onInitializeClient() {
+        AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+        config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+            if (!isEnabled()) return ActionResult.PASS;
             if (world.isClient && !player.isCreative() && !player.isSpectator()
                     && world.getBlockState(pos).getBlock().getClass() == NoteBlock.class) {
                 BlockState state = world.getBlockState(pos);

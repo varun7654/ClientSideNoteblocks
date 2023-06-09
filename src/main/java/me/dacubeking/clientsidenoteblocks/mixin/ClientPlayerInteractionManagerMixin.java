@@ -34,12 +34,13 @@ public abstract class ClientPlayerInteractionManagerMixin {
     public void cancelBlockBreakSound(SoundManager instance, SoundInstance sound, BlockPos pos, Direction direction) {
         World world = this.client.world;
         ClientPlayerEntity player = this.client.player;
-        if (world == null || player == null
+        if (!ClientSideNoteblocksClient.isEnabled()
+                || world == null || player == null
                 || player.isCreative() || player.isSpectator()
                 || world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK
                 || (world.getBlockState(pos).get(INSTRUMENT).isNotBaseBlock() || !world.getBlockState(pos.up()).isAir())) {
             this.client.getSoundManager().play(sound);
-        } else if (ClientSideNoteblocksClient.debug) {
+        } else if (ClientSideNoteblocksClient.isDebug()) {
             ClientSideNoteblocksClient.LOGGER.info("Cancelled block break sound");
 
         }

@@ -42,14 +42,14 @@ public abstract class ClientWorldMixin extends World implements ClientWorldInter
     public void playSound(PlayerEntity except, double x, double y, double z, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed, CallbackInfo ci) {
         BlockPos pos = new BlockPos((int) (x - 0.5), (int) (y - 0.5), (int) (z - 0.5));
 
-        if (NoteblockData.cancelableNoteblockSounds.containsKey(pos)) {
+        if (ClientSideNoteblocksClient.isEnabled() && NoteblockData.cancelableNoteblockSounds.containsKey(pos)) {
             int amount = NoteblockData.cancelableNoteblockSounds.get(pos);
             if (amount < 2) {
                 NoteblockData.cancelableNoteblockSounds.remove(pos);
             } else {
                 NoteblockData.cancelableNoteblockSounds.put(pos, amount - 1);
             }
-            if (ClientSideNoteblocksClient.debug) {
+            if (ClientSideNoteblocksClient.isDebug()) {
                 ClientSideNoteblocksClient.LOGGER.info("Cancelled server note block sound");
             }
             ci.cancel();
@@ -59,10 +59,10 @@ public abstract class ClientWorldMixin extends World implements ClientWorldInter
 
     @Override
     public void bypassedPlaySound(@Nullable PlayerEntity except, double x, double y, double z, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed) {
-        if (ClientSideNoteblocksClient.debug) {
+        if (ClientSideNoteblocksClient.isDebug()) {
             ClientSideNoteblocksClient.LOGGER.info("Bypassed played sound");
         }
- 
+
         this.playSound(x, y, z, (SoundEvent) sound.value(), category, volume, pitch, false, seed);
 
     }
