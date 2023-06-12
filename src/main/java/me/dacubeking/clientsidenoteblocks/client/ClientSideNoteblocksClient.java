@@ -9,17 +9,23 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.NoteBlock;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.logging.Logger;
 
@@ -45,6 +51,25 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
     public void onInitializeClient() {
         AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
+
+        KeyBinding toggleKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("text.clientsidenoteblocks.keybind.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET, "text.clientsidenoteblocks.keybind.category"));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (toggleKeybind.wasPressed()) {
+                if (client.player == null) return;
+
+                config.enabled = !config.enabled;
+                if (config.enabled) {
+                    client.player.sendMessage(Text.translatableWithFallback("text.clientsidenoteblocks.chat.enabled",
+                            "ClientSideNoteblocks is Enabled"), false);
+
+                } else {
+                    client.player.sendMessage(Text.translatableWithFallback("text.clientsidenoteblocks.chat.disabled",
+                            "ClientSideNoteblocks is Disabled"), false);
+                }
+            }
+        });
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
             if (!isEnabled()) return ActionResult.PASS;

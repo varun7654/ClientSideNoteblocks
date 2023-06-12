@@ -36,6 +36,8 @@ dependencies {
     //modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modIncludeImplementation fabricApi.module("fabric-api-base", project.fabric_version)
     modIncludeImplementation fabricApi.module("fabric-events-interaction-v0", project.fabric_version)
+    modIncludeImplementation fabricApi.module("fabric-key-binding-api-v1", project.fabric_version)
+    modIncludeImplementation fabricApi.module("fabric-lifecycle-events-v1", project.fabric_version)
 
 
     // Uncomment the following line to enable the deprecated Fabric API modules.
