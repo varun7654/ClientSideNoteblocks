@@ -22,6 +22,7 @@ package me.dacubeking.clientsidenoteblocks.expiringmap;/*
  * SOFTWARE.
  */
 
+import me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -219,8 +220,13 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     }
 
     private void cleanup() {
-        ExpiringKey<K> delayedKey = delayQueue.poll();
+        ExpiringKey<ExpiringKey> delayedKey = delayQueue.poll();
         while (delayedKey != null) {
+            var value = internalMap.get(delayedKey.getKey());
+            if (ClientSideNoteblocksClient.isDebug() && value instanceof Integer integer) {
+                System.out.println("Removing expired key, server sound not played. Unplayed Sounds: " + integer);
+
+            }
             internalMap.remove(delayedKey.getKey());
             expiringKeys.remove(delayedKey.getKey());
             delayedKey = delayQueue.poll();

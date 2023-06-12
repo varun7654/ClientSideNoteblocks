@@ -1,7 +1,5 @@
 package me.dacubeking.clientsidenoteblocks.client;
 
-import me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData;
-import me.dacubeking.clientsidenoteblocks.expiringmap.SelfExpiringHashMap;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.ClientWorldInterface;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.NoteblockInterface;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -24,11 +22,12 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
+import static me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData.NOTEBLOCK_SOUNDS_TO_CANCEL;
 import static net.minecraft.block.NoteBlock.INSTRUMENT;
 import static net.minecraft.block.NoteBlock.NOTE;
 
@@ -103,12 +102,13 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
 
                     clientWorldInterface.bypassedPlaySound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, registryEntry, SoundCategory.RECORDS, 3.0f, f, world.random.nextLong());
 
-                    SelfExpiringHashMap<BlockPos, Integer> cancelableNoteblockSounds = NoteblockData.cancelableNoteblockSounds;
 
-                    if (cancelableNoteblockSounds.containsKey(pos)) {
-                        cancelableNoteblockSounds.put(pos, cancelableNoteblockSounds.get(pos) + 1);
-                    } else {
-                        cancelableNoteblockSounds.put(pos, 1);
+                    synchronized (NOTEBLOCK_SOUNDS_TO_CANCEL) {
+                        if (NOTEBLOCK_SOUNDS_TO_CANCEL.containsKey(pos)) {
+                            NOTEBLOCK_SOUNDS_TO_CANCEL.get(pos).addAndGet(2);
+                        } else {
+                            NOTEBLOCK_SOUNDS_TO_CANCEL.put(pos, new AtomicInteger(2));
+                        }
                     }
                 }
 
