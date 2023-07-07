@@ -52,7 +52,7 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 
-        KeyBinding toggleKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("text.clientsidenoteblocks.keybind.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET, "text.clientsidenoteblocks.keybind.category"));
+        KeyBinding toggleKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("Toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET, "Client Side Noteblocks"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (toggleKeybind.wasPressed()) {
