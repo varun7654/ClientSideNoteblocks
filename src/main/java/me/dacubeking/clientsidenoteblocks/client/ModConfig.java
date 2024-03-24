@@ -12,4 +12,7 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     boolean enabled = true;
+
+    @ConfigEntry.Gui.Tooltip
+    boolean alwaysCancelPlayedNoteblockServerSounds = false;
 }

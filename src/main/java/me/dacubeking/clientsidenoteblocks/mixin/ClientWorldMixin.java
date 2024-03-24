@@ -35,6 +35,10 @@ public abstract class ClientWorldMixin extends World implements ClientWorldInter
     @Shadow
     private MinecraftClient client;
 
+    @Shadow
+    @Final
+    private static double PARTICLE_Y_OFFSET;
+
     // Ignored by Mixin
     protected ClientWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager, RegistryEntry<DimensionType> dimensionEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long biomeAccess, int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, profiler, isClient, debugWorld, biomeAccess, maxChainedNeighborUpdates);
@@ -49,15 +53,18 @@ public abstract class ClientWorldMixin extends World implements ClientWorldInter
                 if (NOTEBLOCK_SOUNDS_TO_CANCEL.containsKey(pos)) {
                     AtomicInteger amount = NOTEBLOCK_SOUNDS_TO_CANCEL.get(pos);
                     amount.getAndUpdate(i -> {
-                        ci.cancel();
                         if (i > 0) {
                             if (ClientSideNoteblocksClient.isDebug()) {
                                 ClientSideNoteblocksClient.LOGGER.info("Cancelled server note block sound");
                             }
+                            ci.cancel();
                             return i - 1;
                         } else {
                             if (ClientSideNoteblocksClient.isDebug()) {
                                 ClientSideNoteblocksClient.LOGGER.info("Detected an extra server note block sound");
+                            }
+                            if (ClientSideNoteblocksClient.shouldCancelStraySounds()) {
+                                ci.cancel();
                             }
                             return 0;
                         }

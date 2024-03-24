@@ -5,5 +5,5 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface NoteblockInterface {
-    Identifier getCustomSoundPublic(World world, BlockPos pos);
+    Identifier clientSideNoteblocks$getCustomSoundPublic(World world, BlockPos pos);
 }

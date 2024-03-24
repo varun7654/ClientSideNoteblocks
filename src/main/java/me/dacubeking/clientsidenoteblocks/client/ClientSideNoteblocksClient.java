@@ -46,6 +46,10 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
         return config.enabled;
     }
 
+    public static boolean shouldCancelStraySounds() {
+        return config.alwaysCancelPlayedNoteblockServerSounds;
+    }
+
     @Override
     public void onInitializeClient() {
         AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
@@ -91,7 +95,7 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
                     }
 
                     if (instrument.hasCustomSound()) {
-                        Identifier identifier = ((NoteblockInterface) state.getBlock()).getCustomSoundPublic(world, pos);
+                        Identifier identifier = ((NoteblockInterface) state.getBlock()).clientSideNoteblocks$getCustomSoundPublic(world, pos);
                         if (identifier == null) {
                             return ActionResult.PASS;
                         }

@@ -42,7 +42,6 @@ public abstract class ClientPlayerInteractionManagerMixin {
             this.client.getSoundManager().play(sound);
         } else if (ClientSideNoteblocksClient.isDebug()) {
             ClientSideNoteblocksClient.LOGGER.info("Cancelled block break sound");
-
         }
     }
 }

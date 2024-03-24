@@ -22,7 +22,7 @@ public abstract class NoteblockMixin extends Block implements NoteblockInterface
 
 
     @Override
-    public Identifier getCustomSoundPublic(World world, BlockPos pos) {
+    public Identifier clientSideNoteblocks$getCustomSoundPublic(World world, BlockPos pos) {
         return getCustomSound(world, pos);
     }
 }
