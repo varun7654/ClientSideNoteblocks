@@ -15,4 +15,7 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     boolean alwaysCancelPlayedNoteblockServerSounds = false;
+
+    @ConfigEntry.Gui.Tooltip
+    double maxTimeToServerSound = 5.0;
 }

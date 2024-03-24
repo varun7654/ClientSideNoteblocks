@@ -26,7 +26,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-import static me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData.NOTEBLOCK_SOUNDS_TO_CANCEL;
+import static me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient.NOTEBLOCK_SOUNDS_TO_CANCEL;
+import static me.dacubeking.clientsidenoteblocks.client.ClientSideNoteblocksClient.NOTEBLOCK_SOUNDS_TO_CANCEL_LOCK;
 
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin extends World implements ClientWorldInterface {
@@ -49,7 +50,7 @@ public abstract class ClientWorldMixin extends World implements ClientWorldInter
         BlockPos pos = new BlockPos((int) (x - 0.5), (int) (y - 0.5), (int) (z - 0.5));
 
         if (ClientSideNoteblocksClient.isEnabled()) {
-            synchronized (NOTEBLOCK_SOUNDS_TO_CANCEL) {
+            synchronized (NOTEBLOCK_SOUNDS_TO_CANCEL_LOCK) {
                 if (NOTEBLOCK_SOUNDS_TO_CANCEL.containsKey(pos)) {
                     AtomicInteger amount = NOTEBLOCK_SOUNDS_TO_CANCEL.get(pos);
                     amount.getAndUpdate(i -> {

@@ -1,5 +1,6 @@
 package me.dacubeking.clientsidenoteblocks.client;
 
+import me.dacubeking.clientsidenoteblocks.expiringmap.SelfExpiringHashMap;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.ClientWorldInterface;
 import me.dacubeking.clientsidenoteblocks.mixininterfaces.NoteblockInterface;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -22,12 +23,12 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import static me.dacubeking.clientsidenoteblocks.expiringmap.NoteblockData.NOTEBLOCK_SOUNDS_TO_CANCEL;
 import static net.minecraft.block.NoteBlock.INSTRUMENT;
 import static net.minecraft.block.NoteBlock.NOTE;
 
@@ -50,10 +51,18 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
         return config.alwaysCancelPlayedNoteblockServerSounds;
     }
 
+
+    public static final Object NOTEBLOCK_SOUNDS_TO_CANCEL_LOCK = new Object();
+    public static SelfExpiringHashMap<BlockPos, AtomicInteger> NOTEBLOCK_SOUNDS_TO_CANCEL = new SelfExpiringHashMap<>(50000, 100);
+
+    private double lastMaxTimeToServerSound = 0;
+
     @Override
     public void onInitializeClient() {
         AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        lastMaxTimeToServerSound = config.maxTimeToServerSound;
+        NOTEBLOCK_SOUNDS_TO_CANCEL = new SelfExpiringHashMap<>((long) (config.maxTimeToServerSound * 1000), 100);
 
 
         KeyBinding toggleKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("Toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET, "Client Side Noteblocks"));
@@ -75,6 +84,12 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
         });
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+            if (config.enabled && lastMaxTimeToServerSound != config.maxTimeToServerSound) {
+                lastMaxTimeToServerSound = config.maxTimeToServerSound;
+                NOTEBLOCK_SOUNDS_TO_CANCEL = new SelfExpiringHashMap<>((long) (config.maxTimeToServerSound * 1000), 100);
+                LOGGER.info("Max time to server sound changed to " + lastMaxTimeToServerSound);
+            }
+            
             if (!isEnabled()) return ActionResult.PASS;
             if (world.isClient && !player.isCreative() && !player.isSpectator()
                     && world.getBlockState(pos).getBlock().getClass() == NoteBlock.class) {
@@ -107,7 +122,7 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
                     clientWorldInterface.bypassedPlaySound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, registryEntry, SoundCategory.RECORDS, 3.0f, f, world.random.nextLong());
 
 
-                    synchronized (NOTEBLOCK_SOUNDS_TO_CANCEL) {
+                    synchronized (NOTEBLOCK_SOUNDS_TO_CANCEL_LOCK) {
                         if (NOTEBLOCK_SOUNDS_TO_CANCEL.containsKey(pos)) {
                             NOTEBLOCK_SOUNDS_TO_CANCEL.get(pos).addAndGet(2);
                         } else {
