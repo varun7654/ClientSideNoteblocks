@@ -13,7 +13,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.NoteBlock;
-import net.minecraft.block.enums.Instrument;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -101,8 +101,8 @@ public class ClientSideNoteblocksClient implements ClientModInitializer {
 
                     RegistryEntry<SoundEvent> registryEntry;
                     float f;
-                    Instrument instrument = state.get(INSTRUMENT);
-                    if (instrument.shouldSpawnNoteParticles()) {
+                    NoteBlockInstrument instrument = state.get(INSTRUMENT);
+                    if (instrument.canBePitched()) {
                         int i = state.get(NOTE);
                         f = NoteBlock.getNotePitch(i);
                     } else {
