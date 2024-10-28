@@ -48,7 +48,7 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     /**
      * Holds the map keys using the given life time for expiration.
      */
-    private final DelayQueue<ExpiringKey> delayQueue = new DelayQueue<>();
+    private final DelayQueue<ExpiringKey<?>> delayQueue = new DelayQueue<>();
 
     /**
      * The default max life time in milliseconds.
@@ -220,7 +220,7 @@ public class SelfExpiringHashMap<K, V> implements SelfExpiringMap<K, V> {
     }
 
     private void cleanup() {
-        ExpiringKey<ExpiringKey> delayedKey = delayQueue.poll();
+        var delayedKey = delayQueue.poll();
         while (delayedKey != null) {
             var value = internalMap.get(delayedKey.getKey());
             if (ClientSideNoteblocksClient.isDebug() && value instanceof Integer integer) {

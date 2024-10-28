@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -45,7 +45,7 @@ dependencies {
 
     // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") {
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
         exclude group: 'net.fabricmc.fabric-api', module: 'fabric-api'
     }
 
